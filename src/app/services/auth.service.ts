@@ -6,12 +6,44 @@ import {
 } from '@angular/fire/compat/firestore';
 import * as firebase from 'firebase/compat/app';
 import { User } from '../models/user.interface';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth) {}
+  private isUserLoggedIn$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+
+  private userDetails$: Subject<User> = new Subject<User>();
+
+  constructor(
+    private afs: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    private router: Router
+  ) {
+    const savedUserString = localStorage.getItem('user');
+    if (savedUserString !== null) {
+      this.isUserLoggedIn$.next(true);
+    }
+
+    afAuth.authState.subscribe((user) => {
+      if (!!user) {
+        this.userDetails$.next(user as User);
+        const userString: string = JSON.stringify(user);
+        localStorage.setItem('user', userString);
+        this.isUserLoggedIn$.next(true);
+      } else {
+        localStorage.removeItem('user');
+        this.isUserLoggedIn$.next(false);
+      }
+    });
+  }
+
+  public isUserLoggedIn(): Observable<boolean> {
+    return this.isUserLoggedIn$.asObservable();
+  }
 
   public signInWithGoggle() {
     this.authLogin(new firebase.default.auth.GoogleAuthProvider());
@@ -19,7 +51,7 @@ export class AuthService {
 
   private authLogin(provider: firebase.default.auth.AuthProvider) {
     return this.afAuth.signInWithPopup(provider).then((res) => {
-      this.setUserData(res.user as User)
+      this.setUserData(res.user as User);
     });
   }
 
@@ -35,8 +67,15 @@ export class AuthService {
       photoURL: user.photoURL,
     };
 
-    return userRef.set(userData,{
-      merge:true,
-    })
+    return userRef.set(userData, {
+      merge: true,
+    });
+  }
+  public sugnOut(): Promise<void> {
+    return this.afAuth.signOut().then(() => {
+      localStorage.removeItem('user');
+      this.router.navigate(['/']);
+      this.userDetails$.next(undefined!);
+    });
   }
 }

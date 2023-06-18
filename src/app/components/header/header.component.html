@@ -1,0 +1,23 @@
+<div class="header">
+  <mat-toolbar color="primary">
+    <span>My App</span>
+    <span class="example-spacer"></span>
+    <button
+      mat-icon-button
+      class="example-icon"
+      (click)="loginInWithGoggle()"
+      *ngIf="!(isLoggedIn$ | async); else loggedIn"
+    >
+      Login
+    </button>
+    <ng-template #loggedIn>
+      <button
+        mat-icon-button
+        class="example-icon"
+        (click)="signOut()"
+      >
+        Logout
+      </button>
+    </ng-template>
+  </mat-toolbar>
+</div>
