@@ -16,7 +16,8 @@ import { RoomListComponent } from './components/room-list/room-list.component';
 import { AddRoomComponent } from './components/add-room/add-room.component';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-
+import {MatListModule} from '@angular/material/list';
+import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   declarations: [AppComponent, HeaderComponent, ChatComponent, RoomListComponent, AddRoomComponent, HomeComponent, PageNotFoundComponent],
   imports: [
@@ -29,6 +30,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MaterialModule,
     MatIconModule,
     MatToolbarModule,
+    MatListModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent],
