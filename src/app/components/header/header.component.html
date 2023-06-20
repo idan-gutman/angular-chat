@@ -3,8 +3,7 @@
     <span>My App</span>
     <span class="example-spacer"></span>
     <button
-      mat-icon-button
-      class="example-icon"
+    mat-raised-button
       (click)="loginInWithGoggle()"
       *ngIf="!(isLoggedIn$ | async); else loggedIn"
     >
@@ -12,8 +11,8 @@
     </button>
     <ng-template #loggedIn>
       <button
-        mat-icon-button
-        class="example-icon"
+      mat-raised-button
+      color="warn"
         (click)="signOut()"
       >
         Logout

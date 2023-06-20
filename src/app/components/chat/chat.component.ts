@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ChatRoom } from 'src/app/models';
-import { ChatService } from 'src/app/services/chat.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Message } from 'src/app/models';
 
 @Component({
   selector: 'app-chat',
@@ -9,10 +7,7 @@ import { ChatService } from 'src/app/services/chat.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  public rooms$: Observable<ChatRoom[]>;
-  constructor(private chatService: ChatService) {
-    this.rooms$ = this.chatService.getRooms();
-  }
-
+  @Input() messages: Message[] = [];
+  constructor(){}
   ngOnInit(): void {}
 }

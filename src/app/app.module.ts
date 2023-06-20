@@ -18,8 +18,9 @@ import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
+import { ChatContainerComponent } from './components/chat-container/chat-container.component';
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, ChatComponent, RoomListComponent, AddRoomComponent, HomeComponent, PageNotFoundComponent],
+  declarations: [AppComponent, HeaderComponent, ChatComponent, RoomListComponent, AddRoomComponent, HomeComponent, PageNotFoundComponent, ChatContainerComponent],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
