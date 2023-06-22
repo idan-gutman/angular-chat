@@ -49,6 +49,18 @@ export class AuthService {
     this.authLogin(new firebase.default.auth.GoogleAuthProvider());
   }
 
+  public sugnOut(): Promise<void> {
+    return this.afAuth.signOut().then(() => {
+      localStorage.removeItem('user');
+      this.router.navigate(['/']);
+      this.userDetails$.next(undefined!);
+    });
+  }
+
+  public getUserData():Observable<User>{
+    return this.userDetails$.asObservable();
+  }
+
   private authLogin(provider: firebase.default.auth.AuthProvider) {
     return this.afAuth.signInWithPopup(provider).then((res) => {
       this.isUserLoggedIn$.next(true);
@@ -73,11 +85,5 @@ export class AuthService {
       merge: true,
     });
   }
-  public sugnOut(): Promise<void> {
-    return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['/']);
-      this.userDetails$.next(undefined!);
-    });
-  }
+
 }
